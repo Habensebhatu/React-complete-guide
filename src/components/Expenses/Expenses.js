@@ -1,26 +1,28 @@
-import ExpenseItem from "./ExpenseItem";
-import './Expenses.css';
+import React, { useState } from "react";
+import ExpenssesChart from "./ExpensesChart";
+import "./Expenses.css";
+import ExpensesFilter from "../filter/expensesFilter";
 import Card from "../UI/Card";
-function Expenses(props){
+import ExpenseList from "./ExpenseLIst";
 
-  return(
-    <Card className="expenses">
-         <ExpenseItem
-        title={props.expense[0].title}
-        amount={props.expense[0].amount}
-        date={props.expense[0].date}
-      ></ExpenseItem>
-      <ExpenseItem
-        title={props.expense[1].title}
-        amount={props.expense[1].amount}
-        date={props.expense[1].date}
-      ></ExpenseItem>
-      <ExpenseItem
-        title={props.expense[2].title}
-        amount={props.expense[2].amount}
-        date={props.expense[2].date}
-      ></ExpenseItem>
-    </Card>
-  )
+function Expenses(props) {
+  const [enteredFilter, setFilter] = useState("2023");
+  const saveFilterhandel = (year) => {
+    setFilter(year);
+  };
+  const filteredExpense = props.item.filter(expense => expense.date.getFullYear() == enteredFilter)
+
+  return (
+    <div>
+      <Card className="expenses">
+        <ExpensesFilter
+          selected={enteredFilter}
+          OnsaveFilter={saveFilterhandel}
+        />
+        <ExpenssesChart expenses={filteredExpense}/>
+      <ExpenseList items={filteredExpense}/>
+      </Card>
+    </div>
+  );
 }
 export default Expenses;
